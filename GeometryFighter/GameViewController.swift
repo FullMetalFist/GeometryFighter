@@ -21,6 +21,7 @@ class GameViewController: UIViewController {
         self.setupScene()
         self.setupCamera()
         self.spawnShape()
+        self.scnView.delegate = self
     }
     
     override func shouldAutorotate() -> Bool {
@@ -65,11 +66,11 @@ class GameViewController: UIViewController {
         switch ShapeType.random() {
         default:
             // 3
-            //geometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
+            geometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
             //geometry = SCNPyramid(width: 1.0, height: 1.0, length: 1.0)
             //geometry = SCNCone(topRadius: 0.0, bottomRadius: 1.0, height: 1.0)
             //geometry = SCNTorus(ringRadius: 1.5, pipeRadius: 0.5)
-            geometry = SCNCylinder(radius: 1.0, height: 2.0)
+            //geometry = SCNCylinder(radius: 1.0, height: 2.0)
         }
         
         geometry.materials.first?.diffuse.contents = UIColor.random()
@@ -90,5 +91,14 @@ class GameViewController: UIViewController {
         
         // 5
         scnScene.rootNode.addChildNode(geometryNode)
+    }
+}
+
+// 1
+extension GameViewController: SCNSceneRendererDelegate {
+    // 2
+    func renderer(renderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval) {
+        // 3
+        spawnShape()
     }
 }
