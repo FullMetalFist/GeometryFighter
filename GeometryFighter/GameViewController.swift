@@ -64,13 +64,23 @@ class GameViewController: UIViewController {
         var geometry: SCNGeometry
         // 2
         switch ShapeType.random() {
-        default:
-            // 3
+            
+        case .Box:
             geometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
-            //geometry = SCNPyramid(width: 1.0, height: 1.0, length: 1.0)
-            //geometry = SCNCone(topRadius: 0.0, bottomRadius: 1.0, height: 1.0)
-            //geometry = SCNTorus(ringRadius: 1.5, pipeRadius: 0.5)
-            //geometry = SCNCylinder(radius: 1.0, height: 2.0)
+        case .Sphere:
+            geometry = SCNSphere(radius: 0.5)
+        case .Pyramid:
+            geometry = SCNPyramid(width: 1.0, height: 1.0, length: 1.0)
+        case .Torus:
+            geometry = SCNTorus(ringRadius: 0.5, pipeRadius: 0.25)
+        case .Capsule:
+            geometry = SCNCapsule(capRadius: 0.3, height: 2.5)
+        case .Cylinder:
+            geometry = SCNCylinder(radius: 0.3, height: 2.5)
+        case .Cone:
+            geometry = SCNCone(topRadius: 0.25, bottomRadius: 0.5, height: 1.0)
+        case .Tube:
+            geometry = SCNTube(innerRadius: 0.25, outerRadius: 0.5, height: 1.0)
         }
         
         geometry.materials.first?.diffuse.contents = UIColor.random()

@@ -19,10 +19,10 @@ public enum ShapeType:Int {
     case Cone
     case Tube
     
-    case Floor
-    case Plane
-    case Shape
-    case Text
+//    case Floor
+//    case Plane
+//    case Shape
+//    case Text
     
     /*
      -SCNBox
