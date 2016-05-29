@@ -23,7 +23,6 @@ class GameViewController: UIViewController {
         self.setupScene()
         self.setupCamera()
         self.spawnShape()
-        self.scnView.delegate = self
         self.setupHUD()
     }
     
@@ -44,6 +43,7 @@ class GameViewController: UIViewController {
         // 3
         scnView.autoenablesDefaultLighting = true
         
+        scnView.delegate = self
         scnView.playing = true
     }
     
@@ -148,9 +148,11 @@ class GameViewController: UIViewController {
     func handleTouchFor(node: SCNNode) {
         if node.name == "GOOD" {
             game.score += 1
+            createExplosion(node.geometry!, position: node.presentationNode.position, rotation: node.presentationNode.rotation)
             node.removeFromParentNode()
         } else if node.name == "BAD" {
             game.lives -= 1
+            createExplosion(node.geometry!, position: node.presentationNode.position, rotation: node.presentationNode.rotation)
             node.removeFromParentNode()
         }
     }
@@ -169,6 +171,21 @@ class GameViewController: UIViewController {
             // 6
             handleTouchFor(result.node)
         }
+    }
+    
+    // 1
+    func createExplosion(geometry: SCNGeometry, position: SCNVector3, rotation: SCNVector4) {
+        // 2
+        let explosion = SCNParticleSystem(named: "Explode.scnp", inDirectory: nil)!
+//        let explosion = SCNParticleSystem(named: "Plode.scnp", inDirectory: nil)!
+        explosion.emitterShape = geometry
+        explosion.birthLocation = .Surface
+        // 3
+        let rotationMatrix = SCNMatrix4MakeRotation(rotation.w, rotation.x, rotation.y, rotation.z)
+        let translationMatrix = SCNMatrix4MakeTranslation(position.x, position.y, position.z)
+        let transformMatrix = SCNMatrix4Mult(rotationMatrix, translationMatrix)
+        // 4
+        scnScene.addParticleSystem(explosion, withTransform: transformMatrix)
     }
 }
 
